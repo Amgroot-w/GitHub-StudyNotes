@@ -18,7 +18,7 @@
 + 不敢删除旧版本，因为可能将来还会用到；
 + 与别人合作开发时很麻烦，需要手动合并两个人的修改信息。
 
-因此，为了能够**自动地**进行版本控制，Git诞生了！
+因此，为了能够**自动、高效地**进行版本控制，Git诞生了！
 
 ### 1.3 集中式&分布式
 
@@ -121,9 +121,10 @@ Git为什么比其他的版本控制系统更加优秀？因为Git跟踪并管�
 
 `git checkout --<file>`撤销**工作区**中的所有修改。
 
-> `git checkout`的撤销机制是：将`<file>`文件回退到最近一次`git commit`或`git add`的状态。包括两种情况：
->
-> （1）文件修改后，没有add到暂存区。那么`git checkout`后回退到修改之前和版本库一样的状态；（2）文件修改后，已经add到了暂存区，而且在add之后在工作区又做了第二次修改。此时`git checkout`后只能回到第一次修改之后（第二次修改之前）的状态，而无法回到第一次修改之前的状态。
+`git checkout`的撤销机制是：将`<file>`文件回退到最近一次`git commit`或`git add`的状态。包括两种情况：
+
++ 文件修改后，没有add到暂存区。那么`git checkout`后回退到修改之前和版本库一样的状态；
++ 文件修改后，已经add到了暂存区，而且在add之后在工作区又做了第二次修改。此时`git checkout`后只能回到第一次修改之后（第二次修改之前）的状态，而无法回到第一次修改之前的状态。
 
 `git reset HEAD <file>`可以撤销**暂存区**的修改，并重新放回**工作区**。
 
@@ -138,13 +139,24 @@ Git为什么比其他的版本控制系统更加优秀？因为Git跟踪并管�
 
 ### 2.5 删除修改
 
-`rm <file>`直接在工作区删除`<file>`文件（等价于自己鼠标右键手动删除）；
+直接在工作区删除`<file>`文件（等价于自己鼠标右键手动删除）：
 
-`git rm <file>`在版本库&工作区中均删除指定文件。
+```
+rm <file>
+```
 
->在`rm <file>`或者自己手动删除工作区文件后，若是确实需要删除，那么可以紧接着用`git rm <file>`在版本库中也将其删除；若是误删，可以用`git checkout --<file>`将其恢复。
->
->`git checkout --<file>`操作的**实质**是：用版本库中的文件版本替换当前工作区中的版本，无论工作区中的文件是被修改还是被删除（**类似于一键还原**）。
+在版本库&工作区中均删除指定文件：
+
+```
+git rm <file>
+```
+
+在`rm <file>`或者自己手动删除工作区文件后：
+
++ 若是确实需要删除，那么可以紧接着用`git rm <file>`在版本库中也将其删除；
++ 若是误删，可以用`git checkout --<file>`将其恢复。
+
+`git checkout --<file>`操作的实质是：**用版本库中的文件版本替换当前工作区中的版本**，无论工作区中的文件是被修改还是被删除（类似于**一键还原**）。
 
 
 
@@ -200,7 +212,7 @@ https方式速度慢，而且每次提交需要输入密码；SSH Key方式速�
 
 <img src=https://gitee.com/amgroot/image-host/raw/master/GitHub-StudyNotes/origin&master.png alt="origin和master" width="600" height="280" align="center">
 
-> 上图中，远程master分支的路径为：remote/origin/master.
+上图中，远程master分支的路径为：remote/origin/master.
 
 在本地电脑（local）上，本地工作区中的Git中也存在多个本地分支branch，本地的master就是从远程origin传过来的origin/master的副本：master。
 
@@ -224,7 +236,7 @@ C为remote端repository中相应的branch名（若C与B相同，则C可以省略
 
 每次提交，Git都把他们串成一条时间线，这条时间线即为一个分支，若只有一条时间线，那么在Git中，此分支叫做“主分支”，即master。
 
-> `HEAD`指向master，master指向最新提交的分支。
+`HEAD`指向master，master指向最新提交的分支。
 
 <img src=https://gitee.com/amgroot/image-host/raw/master/GitHub-StudyNotes/4.1.1.png alt="origin和master" width="300" height="150" align="center">
 
@@ -262,17 +274,17 @@ C为remote端repository中相应的branch名（若C与B相同，则C可以省略
 
 ### 4.2 解决冲突
 
-``master``分支与``feature1``分支都有提交，此时合并``master``与``feature1``的话可能会出现冲突；
+1. ``master``分支与``feature1``分支都有提交，此时合并``master``与``feature1``的话可能会出现冲突；
 
 <img src=https://gitee.com/amgroot/image-host/raw/master/GitHub-StudyNotes/4.2.png alt="origin和master" width="400" height="250" align="center">
 
-用`git status`查看哪些文件发生了合并冲突，并手动修改这些文件；
+2. 用`git status`查看哪些文件发生了合并冲突，并手动修改这些文件；
 
-修改之后，在``master``分支中add并commit后，即完成冲突解决；
+3. 修改之后，在``master``分支中add并commit后，即完成冲突解决；
 
-最后删除``feature1``分支，只保留``master``分支即可。
+4. 最后删除``feature1``分支，只保留``master``分支即可。
 
-> 解决冲突就是把Git合并失败的文件手动编辑为我们希望的内容，然后再提交的过程。
+**解决冲突就是把Git合并失败的文件手动编辑为我们希望的内容，然后再提交的过程。**
 
 ### 4.3 分支管理策略
 
@@ -280,7 +292,7 @@ C为remote端repository中相应的branch名（若C与B相同，则C可以省略
 
 通过`--no-ff`参数强制禁用fast forward模式，Git就会在合并时**生成一个新的commit**，这样就能从历史上看出分支信息。
 
-<img src=https://gitee.com/amgroot/image-host/raw/master/GitHub-StudyNotes/4.3.1.png alt="origin和master" width="420" height="250" align="center">
+<img src=https://gitee.com/amgroot/image-host/raw/master/GitHub-StudyNotes/4.3.1.png alt="origin和master" width="420" height="230" align="center">
 
 **在实际开发中，分支管理的一些基本原则：**
 
@@ -292,7 +304,7 @@ C为remote端repository中相应的branch名（若C与B相同，则C可以省略
 
 多人合作的分支图如下所示：
 
-<img src=https://gitee.com/amgroot/image-host/raw/master/GitHub-StudyNotes/4.3.2.png alt="origin和master" width="600" height="200" align="center">
+<img src=https://gitee.com/amgroot/image-host/raw/master/GitHub-StudyNotes/4.3.2.png alt="origin和master" width="600" height="160" align="center">
 
 ### 4.4 Bug分支
 
@@ -410,6 +422,187 @@ git branch --set-upstream master origin/master
 + rebase的目的是使我们在查看历时提交的变化时更容易，因为分叉的提交需要**三方对比**。
 
 
+
+## 五、标签管理
+
+### 5.1 创建标签
+
+标签是**版本库的一个快照**（实质上是指向某个`commit`的**指针**）。
+
+> 标签tag是一个名字而已，它跟某个`commit`绑定在一起。
+
+`git tag <tag name>`创建一个新的标签， 默认为最近的一次提交（即HEAD）;
+
+`git tag -a <tag name> -m "discription" <commit ID>` 这是完整用法，`-a`参数指定标签名称，`-m`参数为标签说明，最后再加上指定添加的提交版本ID;
+
+`git tag` 查看所有标签；
+
+`git show <tagname>`可查看标签的信息。
+
+> 标签总是与`commit`挂钩，若该`commit`即出现在`master`分支上，又出现在`dev`分支上，那么在这两个分支上都可看到该标签。
+
+### 5.2 操作标签
+
+推送标签到远程
+
+```
+git push origin <tag name>
+```
+
+推送全部未推送过的本地标签
+
+```
+git push origin --tags
+```
+
+删除一个本地标签
+
+```
+git tag -d <tagname>
+```
+
+删除一个远程标签
+
+```
+git push origin :refs/tags/<tag name>
+```
+
+> 注意：本地创建的标签在push时不会自动推送到远程！
+
+
+
+## 六、使用GitHub
+
+以GitHub上的人气项目*bootstrap*为例，访问该仓库的主页，并点击fork即可在自己的账号下可另一个bootstrap仓库，然后从自己账号的地址clone仓库，这样才能向自己的bootstrap仓库提交修改。（若从原作者的仓库地址clone，是不能向原作者的仓库推送修改的，因为没有权限！）
+
+<img src=https://gitee.com/amgroot/image-host/raw/master/GitHub-StudyNotes/useGitHub.png alt="origin和master" width="400" height="280" align="center">
+
++ 若自己修复了该项目中的一个bug，或者向该项目新增了一个功能，那么可以按照流程**add、commit、push**给自己的远程仓库；
++ 如果想让bootstrap官方库也接受我的修改，那么可以再GitHub上发起一个**pull request**（接不接受完全取决于bootstrap官方）。
+
+
+
+## 七、使用Gitee
+
+Gitee与GitHub的操作基本相同，使用前也需要添加SSH Key，但是Gitee是国内的Git托管平台，速度更快。
+
+同一个本地仓库，可以同时关联到多个远程仓库（这正是Git的分布式优点），只需将远程仓库的名称换一下就行了（原来是origin，现在可以叫做github和gitee），例如：
+
+将本地仓库中的修改向GitHub远程仓库推送：
+
+```
+git push github master
+```
+
+将该本地仓库的修改向Gitee远程仓库推送：
+
+```
+git push gitee master
+```
+
+> 如果还是照常使用origin作为远程仓库的名字，那么Git会报错。
+
+
+
+## 八、自定义Git
+
+### 8.1 忽略特殊文件
+
+#### （1）实现方法
+
+编写`.gitignore`文件，并放入版本库中（ **文件名称必须为空！**）。
+
+#### （2）忽略原则
+
+1. 忽略操作系统自动生成的文件，如缩略图；
+2. 忽略编译生成的中间文件，执行文件；
+3. 忽略自己带有敏感信息的配置文件。
+
+> `.gitignore`配置文件只对还没有加入版本管理的文件起作用，如果在编写`.gitignore`之前已经把文件添加到了版本库中，那么`gitignore`文件中即使配置忽略了该文件，也不会产生忽略的效果。
+
+#### （3）常用操作
+
+1. 当一个文件被`.gitignore`忽略后，又改变主意想要添加该文件，但又不想改动`.gitignore`文件内容，此时可以用`-f`参数强制添加该文件到Git版本库：
+
+```
+git add -f app.class  # app.class为需要忽略的文件
+```
+
+2. 检查`.gitignore`文件中相关文件类型的忽略规则配置：
+
+```
+git check-ignore -v app.class
+```
+
+3. `*`通配多个字符，`?`通配单个字符，`[]`包含单个字符的匹配列表。
+   + `!<file name>`把指定文件排除在`.gitignore`忽略规则之外；
+   + `<file name>/`把指定文件夹下的所有文件都忽略；
+   + `*.txt`忽略所有`.txt`类型的文件
+
+4. Git对于`.gitignore`文件是按行从上到下进行规则匹配的，这意味着`.gitignore`文件中，**写在前面的规则的“优先级”更高**；
+
+5. 目录忽略规则
+
+   + `folder/*`忽略目录folder下的全部内容（不管是根目录下的/folder/还是某个子目录/list/folder/下的内容，都会被忽略）；
+
+   + `/folder/*`只忽略根目录下的/folder/目录的全部内容
+
+   + 以下三行规则表示：忽略除了`.gitignore`文件、根目录下的/fw/bin/以及/fw/sf/之外的全部内容：
+
+     ```
+     /*!.gitignore
+     !/fw/bin/
+     !/fw/sf/
+     ```
+
+### 8.2 配置别名
+
+```
+git config --global alias.<replace name> <original name>
+```
+
+其中`--global`是全局参数，加上之后对这台电脑下的所有Git仓库都适用。
+
+常用的名称替换：
+
+```
+git config --global alias.co checkout
+git config --global alias.ci commit
+git config --global alias.br branch
+git config --global alias.unstage 'reset HEAD'
+git config --global alias.last 'log -1'
+```
+
+最好用的一个（可视化提交历史，直接输入`git log`就可以得到漂亮的提交历史表！）：
+
+```
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+```
+
+配置文件的位置：
+
++ 当前仓库：位于隐藏目录下的config文件（git/config）；
+
++ 当前用户（所有仓库）：用户主目录下的.gitconfig文件。
+
+找到配置文件，其中的[alias]部分就是配置别名相关的配置。
+
+### 8.3 搭建Git服务器
+
+> 搭建Git服务器需要Linux系统！
+
++ 若想要方便的管理公钥，用Gitosis；
++ 若想要像SVN那样控制权限，用Gitolite.
+
+> 其实Git本不支持权限控制，因为Git秉承开源精神。但是有些公司由于技术机密确实需要进行权限控制，甚至需要控制员工的访问权限到特定的分支、特定的目录！于是，考虑到Git支持钩子（hook）功能，在服务器端编写一系列脚本来控制提交等操作，就可以达到权限控制的目的。
+
+
+
+## 九、使用SourceTree
+
++ SourceTree是一种Git的图形界面工具；
+
++ SourceTree以图形界面操作Git，省去了敲命令的过程，但实际上它还是通过Git命令来执行各种操作的，出错时，仍然需要通过Git命令返回的错误信息来判断出错原因。
 
 
 
