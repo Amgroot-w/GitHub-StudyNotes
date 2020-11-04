@@ -162,7 +162,7 @@ git rm <file>
 
 ## 三、远程仓库
 
-**添加公钥：**在本地用户主目录下，用git命令生成.ssh目录，将其中的id_rsa.pub文件内容（公钥）输入GitHub账户中，完成后即可在这台电脑上向GitHub提交推送了（任何人都可以看到该仓库，但是只有有SSH Key的电脑才能推送修改）。
+**添加公钥：** 在本地用户主目录下，用git命令生成.ssh目录，将其中的id_rsa.pub文件内容（公钥）输入GitHub账户中，完成后即可在这台电脑上向GitHub提交推送了（任何人都可以看到该仓库，但是只有有SSH Key的电脑才能推送修改）。
 
 <img src=https://gitee.com/amgroot/image-host/raw/master/GitHub-StudyNotes/SSHkey.png alt="origin和master" width="480" height="100" align="center">
 
